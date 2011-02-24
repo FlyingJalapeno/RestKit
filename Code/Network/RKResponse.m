@@ -15,7 +15,7 @@
 @synthesize body = _body, request = _request, failureError = _failureError;
 
 - (id)init {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		_body = [[NSMutableData alloc] init];
 		_failureError = nil;
 		_loading = NO;
@@ -25,7 +25,7 @@
 }
 
 - (id)initWithRequest:(RKRequest*)request {
-	if (self = [self init]) {
+	if ((self = [self init])) {
 		// We don't retain here as we're letting RKRequestQueue manage
 		// request ownership
 		_request = request;
@@ -35,7 +35,7 @@
 }
 
 - (id)initWithSynchronousRequest:(RKRequest*)request URLResponse:(NSURLResponse*)URLResponse body:(NSData*)body error:(NSError*)error {
-	if (self = [super init]) {
+	if ((self = [self init])) {
 		// TODO: Does the lack of retain here cause problems with synchronous requests, since they
 		// are not being retained by the RKRequestQueue??
 		_request = request;

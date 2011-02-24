@@ -13,7 +13,7 @@
 @implementation RKDynamicRouter
 
 - (id)init {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		_routes = [[NSMutableDictionary alloc] init];
 	}
 	
@@ -80,11 +80,11 @@
 	NSDictionary* classRoutes = [_routes objectForKey:className];
 	
 	NSString* resourcePath = nil;
-	if (resourcePath = [classRoutes objectForKey:methodName]) {
+	if ((resourcePath = [classRoutes objectForKey:methodName])) {
 		return RKMakePathWithObject(resourcePath, object);
 	}
 	
-	if (resourcePath = [classRoutes objectForKey:@"ANY"]) {
+	if ((resourcePath = [classRoutes objectForKey:@"ANY"])) {
 		return RKMakePathWithObject(resourcePath, object);
 	}
 	

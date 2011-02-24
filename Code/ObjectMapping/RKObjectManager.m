@@ -28,7 +28,7 @@ static RKObjectManager* sharedManager = nil;
 @synthesize router = _router;
 
 - (id)initWithBaseURL:(NSString*)baseURL {
-	if (self = [super init]) {
+	if ((self = [self init])) {
 		_mapper = [[RKObjectMapper alloc] init];
 		_router = [[RKDynamicRouter alloc] init];
 		_client = [[RKClient clientWithBaseURL:baseURL] retain];

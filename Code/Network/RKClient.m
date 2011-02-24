@@ -115,7 +115,7 @@ NSString* RKMakePathWithObject(NSString* path, id object) {
 }
 
 - (id)init {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		_HTTPHeaders = [[NSMutableDictionary alloc] init];
 		self.serviceUnavailableAlertEnabled = NO;
 		self.serviceUnavailableAlertTitle = NSLocalizedString(@"Service Unavailable", nil);

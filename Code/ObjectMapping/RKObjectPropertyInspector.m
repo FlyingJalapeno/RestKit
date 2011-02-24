@@ -13,7 +13,7 @@
 @implementation RKObjectPropertyInspector
 
 - (id)init {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		_cachedPropertyNamesAndTypes = [[NSMutableDictionary alloc] init];
 	}
 	

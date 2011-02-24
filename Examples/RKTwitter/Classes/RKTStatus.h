@@ -6,7 +6,7 @@
 //  Copyright 2010 Two Toasters. All rights reserved.
 //
 
-#import <RestKit/RestKit.h>
+#import "RestKit.h"
 #import "RKTUser.h"
 
 @interface RKTStatus : RKObject {

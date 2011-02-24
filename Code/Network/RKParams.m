@@ -26,7 +26,7 @@ NSString* const kRKStringBoundary = @"0xKhTmLbOuNdArY";
 }
 
 - (id)init {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		_attachments = [NSMutableArray new];
 		_footer       = [[[NSString stringWithFormat:@"--%@--\r\n", kRKStringBoundary] dataUsingEncoding:NSUTF8StringEncoding] retain];
 		_footerLength = [_footer length];
@@ -41,7 +41,7 @@ NSString* const kRKStringBoundary = @"0xKhTmLbOuNdArY";
 }
 
 - (RKParams*)initWithDictionary:(NSDictionary*)dictionary {
-	if (self = [self init]) {
+	if ((self = [self init])) {
 		for (NSString* key in dictionary) {
 			id value = [dictionary objectForKey:key];
 			[self setValue:value forParam:key];

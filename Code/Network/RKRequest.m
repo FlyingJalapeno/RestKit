@@ -26,7 +26,7 @@
 }
 
 - (id)initWithURL:(NSURL*)URL {
-	if (self = [self init]) {
+	if ((self = [self init])) {
 		_URL = [URL retain];
 		_URLRequest = [[NSMutableURLRequest alloc] initWithURL:_URL];
 		_connection = nil;
@@ -37,7 +37,7 @@
 }
 
 - (id)initWithURL:(NSURL*)URL delegate:(id)delegate {
-	if (self = [self initWithURL:URL]) {
+	if ((self = [self initWithURL:URL])) {
 		_delegate = delegate;
 	}
 	return self;
