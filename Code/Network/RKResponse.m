@@ -183,8 +183,21 @@ extern NSString* cacheURLKey;
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 	[_body appendData:data];
+    
+    if([[self contentEncoding] isEqualToString:@"gzip"]){
+        
+        if ([[_request delegate] respondsToSelector:@selector(request:didReceiveDecompressedData:totalDecompressedBytesReceived:totalCompressedBytesExectedToReceive:)]) {
+            
+            NSInteger length = [[self contentLength] integerValue];
+
+            [[_request delegate] request:_request didReceiveDecompressedData:(NSInteger)[data length] totalDecompressedBytesReceived:(NSInteger)[_body length] totalCompressedBytesExectedToReceive:length];
+            
+        }
+    }
+  
     if ([[_request delegate] respondsToSelector:@selector(request:didReceivedData:totalBytesReceived:totalBytesExectedToReceive:)]) {
-        [[_request delegate] request:_request didReceivedData:[data length] totalBytesReceived:[_body length] totalBytesExectedToReceive:_httpURLResponse.expectedContentLength];
+        
+        [[_request delegate] request:_request didReceivedData:(NSInteger)[data length] totalBytesReceived:(NSInteger)[_body length] totalBytesExectedToReceive:_httpURLResponse.expectedContentLength];
     }
 }
 
@@ -400,6 +413,10 @@ extern NSString* cacheURLKey;
 	return ([[self allHeaderFields] objectForKey:@"Content-Type"]);
 }
 
+- (NSString*)contentEncoding {
+	return ([[self allHeaderFields] objectForKey:@"Content-Encoding"]);
+}
+    
 - (NSString*)contentLength {
 	return ([[self allHeaderFields] objectForKey:@"Content-Length"]);
 }

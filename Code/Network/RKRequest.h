@@ -453,6 +453,13 @@ typedef enum {
  */
 - (void)request:(RKRequest *)request didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite;
 
+
+/**
+ * Sent when request has received compressed data from remote site
+ */
+- (void)request:(RKRequest*)request didReceiveDecompressedData:(NSInteger)bytesReceived totalDecompressedBytesReceived:(NSInteger)totalBytesReceived totalCompressedBytesExectedToReceive:(NSInteger)totalBytesExpectedToReceive;
+
+
 /**
  * Sent when request has received data from remote site
  */

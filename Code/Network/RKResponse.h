@@ -231,6 +231,11 @@
 - (NSString *)contentType;
 
 /**
+ * Returns the value of the 'Content-Encoding' HTTP header
+ */
+- (NSString*)contentEncoding;
+
+/**
  * Returns the value of the 'Content-Length' HTTP header
  */
 - (NSString *)contentLength;
