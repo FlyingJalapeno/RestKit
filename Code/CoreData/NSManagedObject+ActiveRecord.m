@@ -491,24 +491,6 @@ static NSNumber *defaultBatchSize = nil;
 
 #if TARGET_OS_IPHONE
 
-+ (NSFetchedResultsController *)fetchRequestAllGroupedBy:(NSString *)group withPredicate:(NSPredicate *)searchTerm sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending inContext:(NSManagedObjectContext *)context
-{
-	NSString *cacheName = nil;
-#ifdef STORE_USE_CACHE
-	cacheName = [NSString stringWithFormat:@"ActiveRecord-Cache-%@", NSStringFromClass(self)];
-#endif
-	
-	NSFetchRequest *request = [self requestAllSortedBy:sortTerm 
-											 ascending:ascending 
-										 withPredicate:searchTerm
-											 inContext:context];
-	
-	NSFetchedResultsController *controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request 
-																				 managedObjectContext:context
-																				   sectionNameKeyPath:group
-																							cacheName:cacheName];
-	return [controller autorelease];
-}
 
 + (NSFetchedResultsController *)fetchRequestAllGroupedBy:(NSString *)group withPredicate:(NSPredicate *)searchTerm sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending 
 {
@@ -519,40 +501,33 @@ static NSNumber *defaultBatchSize = nil;
 								inContext:[self currentContext]];
 }
 
-+ (NSFetchedResultsController *)fetchAllSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(NSPredicate *)searchTerm groupBy:(NSString *)groupingKeyPath inContext:(NSManagedObjectContext *)context
+
++ (NSFetchedResultsController *)fetchRequestAllGroupedBy:(NSString *)group withPredicate:(NSPredicate *)searchTerm sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending inContext:(NSManagedObjectContext *)context
 {
-	NSFetchedResultsController *controller = [self fetchRequestAllGroupedBy:groupingKeyPath 
-															  withPredicate:searchTerm
-																   sortedBy:sortTerm 
-																  ascending:ascending
-																  inContext:context];
 	
-	[self performFetch:controller];
-	return controller;
+	NSFetchRequest *request = [self requestAllSortedBy:sortTerm 
+											 ascending:ascending 
+										 withPredicate:searchTerm
+											 inContext:context];
+    
+    return [self fetchRequest:request groupedBy:group inContext:context];
+	
 }
 
-+ (NSFetchedResultsController *)fetchAllSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(NSPredicate *)searchTerm groupBy:(NSString *)groupingKeyPath
-{
-	return [self fetchAllSortedBy:sortTerm 
-						ascending:ascending
-					withPredicate:searchTerm 
-						  groupBy:groupingKeyPath 
-						inContext:[self currentContext]];
++ (NSFetchedResultsController *)fetchRequestAllGroupedBy:(NSString *)group withPredicate:(NSPredicate *)searchTerm sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending cacheName:(NSString*)cacheName{
+    
+    return [self fetchRequestAllGroupedBy:group withPredicate:searchTerm sortedBy:sortTerm ascending:ascending cacheName:cacheName inContext:[self currentContext]];
 }
 
-+ (NSFetchedResultsController *)fetchRequest:(NSFetchRequest *)request groupedBy:(NSString *)group inContext:(NSManagedObjectContext *)context
-{
-	NSString *cacheName = nil;
-#ifdef STORE_USE_CACHE
-	cacheName = [NSString stringWithFormat:@"ActiveRecord-Cache-%@", NSStringFromClass([self class])];
-#endif
-	NSFetchedResultsController *controller =
-    [[NSFetchedResultsController alloc] initWithFetchRequest:request
-                                        managedObjectContext:context
-                                          sectionNameKeyPath:group
-                                                   cacheName:cacheName];
-    [self performFetch:controller];
-	return [controller autorelease];
+
++ (NSFetchedResultsController *)fetchRequestAllGroupedBy:(NSString *)group withPredicate:(NSPredicate *)searchTerm sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending cacheName:(NSString*)cacheName inContext:(NSManagedObjectContext *)context{
+
+    NSFetchRequest *request = [self requestAllSortedBy:sortTerm 
+											 ascending:ascending 
+										 withPredicate:searchTerm
+											 inContext:context];
+    
+    return [self fetchRequest:request groupedBy:group cacheName:cacheName inContext:context];
 }
 
 + (NSFetchedResultsController *)fetchRequest:(NSFetchRequest *)request groupedBy:(NSString *)group
@@ -561,6 +536,39 @@ static NSNumber *defaultBatchSize = nil;
 					groupedBy:group
 					inContext:[self currentContext]];
 }
+
++ (NSFetchedResultsController *)fetchRequest:(NSFetchRequest *)request groupedBy:(NSString *)group inContext:(NSManagedObjectContext *)context
+{
+	NSString *cacheName = nil;
+#ifdef STORE_USE_CACHE
+	cacheName = [NSString stringWithFormat:@"ActiveRecord-Cache-%@", NSStringFromClass([self class])];
+#endif
+    
+    return [self fetchRequest:request groupedBy:group cacheName:cacheName inContext:context];
+   
+}
+
+
+
++ (NSFetchedResultsController *)fetchRequest:(NSFetchRequest *)request groupedBy:(NSString *)group cacheName:(NSString*)cacheName{
+    
+    return [self fetchRequest:request groupedBy:group cacheName:cacheName inContext:[self currentContext]];
+}
+
+
++ (NSFetchedResultsController *)fetchRequest:(NSFetchRequest *)request groupedBy:(NSString *)group cacheName:(NSString*)cacheName inContext:(NSManagedObjectContext *)context{
+    
+	NSFetchedResultsController *controller =
+    [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                        managedObjectContext:context
+                                          sectionNameKeyPath:group
+                                                   cacheName:cacheName];
+    [self performFetch:controller];
+	return [controller autorelease];
+
+}
+
+
 #endif
 
 #pragma mark -
