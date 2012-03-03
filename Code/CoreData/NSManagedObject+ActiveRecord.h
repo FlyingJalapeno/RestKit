@@ -78,6 +78,9 @@
  */
 + (NSUInteger)count DEPRECATED_ATTRIBUTE;
 
+
++ (NSUInteger)countWithFetchRequest:(NSFetchRequest*)fetchRequest error:(NSError**)error;
+
 /**
  *	Creates a new managed object and inserts it into the managedObjectContext.
  */
@@ -120,6 +123,8 @@
 
 + (BOOL) hasAtLeastOneEntity;
 + (BOOL) hasAtLeastOneEntityInContext:(NSManagedObjectContext *)context;
+
++ (NSManagedObject*)objectWithID:(NSManagedObjectID*)objID;
 
 + (NSFetchRequest *)requestAll;
 + (NSFetchRequest *)requestAllInContext:(NSManagedObjectContext *)context;

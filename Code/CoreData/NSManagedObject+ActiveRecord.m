@@ -90,6 +90,11 @@ static NSNumber *defaultBatchSize = nil;
 	return [self objectsWithPredicate:nil];
 }
 
++ (NSUInteger)countWithFetchRequest:(NSFetchRequest*)fetchRequest error:(NSError**)error {
+	return [[self managedObjectContext] countForFetchRequest:fetchRequest error:error];
+}
+
+
 + (NSUInteger)count:(NSError**)error {
 	NSFetchRequest* fetchRequest = [self fetchRequest];
 	return [[self managedObjectContext] countForFetchRequest:fetchRequest error:error];
@@ -108,6 +113,12 @@ static NSNumber *defaultBatchSize = nil;
 - (BOOL)isNew {
     NSDictionary *vals = [self committedValuesForKeys:nil];
     return [vals count] == 0;
+}
+
+- (NSManagedObject*)objectWithID:(NSManagedObjectID*)objID{
+    
+    return [[[self class] currentContext] objectWithID:objID];
+    
 }
 
 #pragma mark - MagicalRecord Ported Methods
