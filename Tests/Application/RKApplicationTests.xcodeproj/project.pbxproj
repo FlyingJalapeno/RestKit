@@ -153,6 +153,13 @@
 			remoteGlobalIDString = 25160D1514564E810060A5C5;
 			remoteInfo = RestKit;
 		};
+		C41D86F51524204E0028B72A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 253B489814E341C500B0483F /* RestKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 259C301615128079003066A2;
+			remoteInfo = RestKitResources;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -286,7 +293,7 @@
 		25FABE9C14E3698100E609E7 /* user.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = user.json; sourceTree = "<group>"; };
 		25FABE9D14E3698100E609E7 /* users.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = users.json; sourceTree = "<group>"; };
 		25FABE9F14E3698100E609E7 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		25FABEA014E3698100E609E7 /* file */ = {isa = PBXFileReference; lastKnownFileType = file; path = file; sourceTree = "<group>"; };
+		25FABEA014E3698100E609E7 /* file */ = {isa = PBXFileReference; lastKnownFileType = text; path = file; sourceTree = "<group>"; };
 		25FABEA214E3698100E609E7 /* attributes_without_text_content.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = attributes_without_text_content.xml; sourceTree = "<group>"; };
 		25FABEA314E3698100E609E7 /* channels.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = channels.xml; sourceTree = "<group>"; };
 		25FABEA414E3698100E609E7 /* container_attributes.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = container_attributes.xml; sourceTree = "<group>"; };
@@ -427,6 +434,7 @@
 				253B48A514E341C500B0483F /* RestKitTests.octest */,
 				253B48A714E341C500B0483F /* RestKit.framework */,
 				253B48A914E341C500B0483F /* RestKitFrameworkTests.octest */,
+				C41D86F61524204E0028B72A /* RestKitResources.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -752,6 +760,13 @@
 			fileType = wrapper.cfbundle;
 			path = RestKitFrameworkTests.octest;
 			remoteRef = 253B48A814E341C500B0483F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C41D86F61524204E0028B72A /* RestKitResources.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RestKitResources.bundle;
+			remoteRef = C41D86F51524204E0028B72A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
