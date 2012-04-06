@@ -22,6 +22,9 @@
 #import "RKErrors.h"
 
 @interface RKOAuthClient () <RKRequestDelegate>
+
+@property (nonatomic, retain) RKRequest *authRequest;
+
 @end
 
 @implementation RKOAuthClient
@@ -33,6 +36,8 @@
 @synthesize callbackURL = _callbackURL;
 @synthesize delegate = _delegate;
 @synthesize accessToken = _accessToken;
+@synthesize refreshToken = _refreshToken;
+@synthesize authRequest = _authRequest;
 
 + (RKOAuthClient *)clientWithClientID:(NSString *)clientID secret:(NSString *)secret {
     RKOAuthClient *client = [[[self alloc] initWithClientID:clientID secret:secret] autorelease];
@@ -54,18 +59,24 @@
     [_clientSecret release];
     [_accessToken release];
     
+    self.authRequest.delegate = nil;
+    [_authRequest release];
+    
     [super dealloc];
 }
 
 - (void)validateAuthorizationCode {
-    NSString *httpBody = [NSString stringWithFormat:@"client_id=%@&client_secret=%@&code=%@&redirect_uri=%@&grant_type=authorization_code",
+    NSString *httpBody = [NSString stringWithFormat:@"client_id=%@&client_secret=%@&code=%@&redirect_uri=%@&grant_type=authorization_code&type=web_server",
                           _clientID, _clientSecret, _authorizationCode, _callbackURL];
     NSURL *URL = [NSURL URLWithString:_authorizationURL];
     RKRequest *theRequest = [RKRequest requestWithURL:URL];
+    [theRequest setDisableCertificateValidation:YES];
     theRequest.delegate = self;
     [theRequest setHTTPBodyString:httpBody];
     [theRequest setMethod:RKRequestMethodPOST];
     [theRequest send];
+    
+    self.authRequest = theRequest;
 }
 
 - (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response {
@@ -79,6 +90,7 @@
         
         //Check the if an access token comes in the response
         _accessToken = [[oauthResponse objectForKey:@"access_token"] copy];
+        _refreshToken = [[oauthResponse objectForKey:@"refresh_token"] copy];
         errorResponse = [oauthResponse objectForKey:@"error"];
         
         if (_accessToken) {           
@@ -159,6 +171,9 @@
     } else {
         // TODO: Logging...
     }
+    
+    //self.authRequest.delegate = nil;
+    //self.authRequest = nil;
 }
 
 
@@ -173,6 +188,9 @@
     if ([self.delegate respondsToSelector:@selector(OAuthClient:didFailWithError:)]) {
         [self.delegate OAuthClient:self didFailWithError:clientError];
     }
+    
+    //self.authRequest.delegate = nil;
+    //self.authRequest = nil;
 }
 
 @end

@@ -195,6 +195,12 @@ typedef enum RKOAuthClientErrors {
  */
 @property (nonatomic, readonly) NSString *accessToken;
 
+
+/**
+ Returns the refresh token retrieved from the authentication server
+ */
+@property (nonatomic, readonly) NSString *refreshToken;
+
 /**
  Fire a request to the authentication server to validate the authorization code
  that has been set on the authorizationCode property.  All responses are handled
