@@ -810,6 +810,16 @@ typedef void(^RKRequestDidFailLoadWithErrorBlock)(NSError *error);
 - (void)requestDidStartLoad:(RKRequest *)request;
 
 /**
+ Sent when a request has first received a response. Useful for inspecting any headers.
+ 
+ @param request The RKRequest object that has recieved a response.
+ @param response The RKResponse object that will contain the result of the request.
+
+ */
+- (void)request:(RKRequest *)request didReceiveResponse:(RKResponse *)response;
+
+
+/**
  Sent when a request has uploaded data to the remote site
  
  @param request The RKRequest object that is handling the loading.
