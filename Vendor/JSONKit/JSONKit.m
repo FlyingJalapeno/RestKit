@@ -124,6 +124,12 @@
 #import <Foundation/NSNull.h>
 #import <Foundation/NSObjCRuntime.h>
 
+#pragma clang diagnostic push
+
+#pragma clang diagnostic ignored "-Wformat"
+#pragma clang diagnostic ignored "-Wdeprecated-objc-isa-usage"
+
+
 #ifndef __has_feature
 #define __has_feature(x) 0
 #endif
@@ -3056,4 +3062,6 @@ errorExit:
 @end
 
 #endif // __BLOCKS__
+
+#pragma clang diagnostic pop
 
