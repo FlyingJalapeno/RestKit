@@ -250,6 +250,23 @@ static const NSTimeInterval kFlushDelay = 0.3;
 }
 
 - (RKRequest*)nextRequest {
+    
+    //lets scrub all cancelled requests from the queue first!
+    NSMutableArray* reqs = [NSMutableArray array];
+    
+    for (NSUInteger i = 0; i < [_requests count]; i++) {
+        RKRequest* request = [_requests objectAtIndex:i];
+        if ([request isCancelled]) {
+            [reqs addObject:request];
+        }
+    }
+    
+    [reqs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        
+        [self removeRequest:obj];
+ 
+    }];
+        
     for (NSUInteger i = 0; i < [_requests count]; i++) {
         RKRequest* request = [_requests objectAtIndex:i];
         if ([request isUnsent]) {

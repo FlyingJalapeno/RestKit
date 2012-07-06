@@ -451,6 +451,13 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
     [[NSNotificationCenter defaultCenter] postNotificationName:RKRequestSentNotification object:self userInfo:nil];
 }
 
+- (BOOL)shouldSendRequest {
+    if(self.isCancelled)
+        return NO;
+    
+    return YES;
+}
+
 - (BOOL)shouldLoadFromCache {
     // if RKRequestCachePolicyEnabled or if RKRequestCachePolicyTimeout and we are in the timeout
     if ([self.cache hasResponseForRequest:self]) {
@@ -479,8 +486,13 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
 }
 
 - (void)sendAsynchronously {
+    
+    if(![self shouldSendRequest])
+        return;
+
     NSAssert(NO == _isLoading || NO == _isLoaded, @"Cannot send a request that is loading or loaded without resetting it first.");
     _sentSynchronously = NO;
+        
     if ([self shouldLoadFromCache]) {
         RKResponse* response = [self loadResponseFromCache];
         _isLoading = YES;
@@ -548,6 +560,10 @@ RKRequestMethod RKRequestMethodTypeFromName(NSString *methodName) {
 }
 
 - (RKResponse*)sendSynchronously {
+
+    if(![self shouldSendRequest])
+        return nil;
+    
     NSAssert(NO == _isLoading || NO == _isLoaded, @"Cannot send a request that is loading or loaded without resetting it first.");
 	NSHTTPURLResponse* URLResponse = nil;
 	NSError* error;
