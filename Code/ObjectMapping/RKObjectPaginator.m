@@ -116,7 +116,7 @@ static NSUInteger RKObjectPaginatorDefaultPerPage = 25;
 }
 
 - (NSUInteger)pageCount {
-    NSAssert([self hasPageCount], @"Page count not available.");
+    //NSAssert([self hasPageCount], @"Page count not available.");
     return pageCount;
 }
 
