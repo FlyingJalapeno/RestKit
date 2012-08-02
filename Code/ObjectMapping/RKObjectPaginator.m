@@ -134,10 +134,11 @@ static NSUInteger RKObjectPaginatorDefaultPerPage = 25;
 
 #pragma mark - RKObjectLoaderDelegate methods
 
+
 - (void)objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects {
     self.objectLoader = nil;
     loaded = YES;
-    RKLogInfo(@"Loaded objects: %@", objects);
+    //RKLogInfo(@"Loaded objects: %@", objects);
     [self.delegate paginator:self didLoadObjects:objects forPage:self.currentPage];
     
     if (self.onDidLoadObjectsForPage) {
@@ -176,7 +177,7 @@ static NSUInteger RKObjectPaginatorDefaultPerPage = 25;
     } else if (self.perPage && [self hasObjectCount]) {
       float objectCountFloat = self.objectCount;
       pageCount = ceilf(objectCountFloat / self.perPage);
-      RKLogInfo(@"Paginator objectCount: %ld pageCount: %ld", (long) self.objectCount, (long) self.pageCount); 
+      //RKLogInfo(@"Paginator objectCount: %ld pageCount: %ld", (long) self.objectCount, (long) self.pageCount);
     } else {
       NSAssert(NO, @"Paginator perPage set is 0.");
       RKLogError(@"Paginator perPage set is 0.");
