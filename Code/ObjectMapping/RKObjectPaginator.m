@@ -138,20 +138,34 @@ static NSUInteger RKObjectPaginatorDefaultPerPage = 25;
 - (void)objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects {
     self.objectLoader = nil;
     loaded = YES;
+    
     //RKLogInfo(@"Loaded objects: %@", objects);
-    [self.delegate paginator:self didLoadObjects:objects forPage:self.currentPage];
+    
+    //It is expected behavior for the delegate to load the next page during this call back. We need to get current state for comparison prior to this happening.
+    
+    BOOL hasCount = [self hasPageCount];
+
+    NSUInteger theCurrentPage = 0;
+    NSUInteger thePageCount = 0;
+
+    if(hasCount){
+        theCurrentPage = self.currentPage;
+        thePageCount = self.pageCount;
+    }
+    
+    [self.delegate paginator:self didLoadObjects:objects forPage:theCurrentPage];
     
     if (self.onDidLoadObjectsForPage) {
         self.onDidLoadObjectsForPage(objects, self.currentPage);
     }
     
-    if ([self hasPageCount] && self.currentPage == 1) {
+    if (hasCount && theCurrentPage == 1) {
         if ([self.delegate respondsToSelector:@selector(paginatorDidLoadFirstPage:)]) {
             [self.delegate paginatorDidLoadFirstPage:self];
         }
     }
     
-    if ([self hasPageCount] && self.currentPage == self.pageCount) {
+    if (hasCount && theCurrentPage == thePageCount) {
         if ([self.delegate respondsToSelector:@selector(paginatorDidLoadLastPage:)]) {
             [self.delegate paginatorDidLoadLastPage:self];
         }
