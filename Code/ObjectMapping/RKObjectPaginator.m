@@ -4,13 +4,13 @@
 //
 //  Created by Blake Watters on 12/29/11.
 //  Copyright (c) 2009-2012 RestKit. All rights reserved.
-//  
+//
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
-//  
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-//  
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -62,14 +62,14 @@ static NSUInteger RKObjectPaginatorDefaultPerPage = 25;
         perPage = RKObjectPaginatorDefaultPerPage;
         loaded = NO;
     }
-    
+
     return self;
 }
 
 - (void)dealloc {
     delegate = nil;
     configurationDelegate = nil;
-    objectLoader.delegate = nil;    
+    objectLoader.delegate = nil;
     [patternURL release];
     patternURL = nil;
     [mappingProvider release];
@@ -83,8 +83,8 @@ static NSUInteger RKObjectPaginatorDefaultPerPage = 25;
     [onDidLoadObjectsForPage release];
     onDidLoadObjectsForPage = nil;
     [onDidFailWithError release];
-    onDidFailWithError = nil;    
-    
+    onDidFailWithError = nil;
+
     [super dealloc];
 }
 
@@ -123,7 +123,7 @@ static NSUInteger RKObjectPaginatorDefaultPerPage = 25;
 - (BOOL)hasNextPage {
     NSAssert(self.isLoaded, @"Cannot determine hasNextPage: paginator is not loaded.");
     NSAssert([self hasPageCount], @"Cannot determine hasNextPage: page count is not known.");
-    
+
     return self.currentPage < self.pageCount;
 }
 
@@ -138,7 +138,7 @@ static NSUInteger RKObjectPaginatorDefaultPerPage = 25;
 - (void)objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects {
     self.objectLoader = nil;
     loaded = YES;
-    
+
     //RKLogInfo(@"Loaded objects: %@", objects);
     
     //It is expected behavior for the delegate to load the next page during this call back. We need to get current state for comparison prior to this happening.
@@ -158,13 +158,13 @@ static NSUInteger RKObjectPaginatorDefaultPerPage = 25;
     if (self.onDidLoadObjectsForPage) {
         self.onDidLoadObjectsForPage(objects, self.currentPage);
     }
-    
+
     if (hasCount && theCurrentPage == 1) {
         if ([self.delegate respondsToSelector:@selector(paginatorDidLoadFirstPage:)]) {
             [self.delegate paginatorDidLoadFirstPage:self];
         }
     }
-    
+
     if (hasCount && theCurrentPage == thePageCount) {
         if ([self.delegate respondsToSelector:@selector(paginatorDidLoadLastPage:)]) {
             [self.delegate paginatorDidLoadLastPage:self];
@@ -212,23 +212,23 @@ static NSUInteger RKObjectPaginatorDefaultPerPage = 25;
     NSAssert(self.mappingProvider, @"Cannot perform a load with a nil mappingProvider.");
     NSAssert(! objectLoader, @"Cannot perform a load while one is already in progress.");
     currentPage = pageNumber;
-    
+
     if (self.objectStore) {
         self.objectLoader = [[[RKManagedObjectLoader alloc] initWithURL:self.URL mappingProvider:self.mappingProvider objectStore:self.objectStore] autorelease];
     } else {
         self.objectLoader = [[[RKObjectLoader alloc] initWithURL:self.URL mappingProvider:self.mappingProvider] autorelease];
     }
-  
+
     if ([self.configurationDelegate respondsToSelector:@selector(configureObjectLoader:)]) {
         [self.configurationDelegate configureObjectLoader:objectLoader];
     }
     self.objectLoader.method = RKRequestMethodGET;
     self.objectLoader.delegate = self;
-    
+
     if ([self.delegate respondsToSelector:@selector(paginator:willLoadPage:objectLoader:)]) {
         [self.delegate paginator:self willLoadPage:pageNumber objectLoader:self.objectLoader];
     }
-    
+
     [self.objectLoader send];
 }
 
