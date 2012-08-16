@@ -27,6 +27,9 @@
 #import "RKErrors.h"
 #import "RKLog.h"
 
+static NSNumberFormatter *_numberFormatter = nil;
+
+
 // Set Logging Component
 #undef RKLogComponent
 #define RKLogComponent lcl_cRestKitObjectMapping
@@ -76,6 +79,13 @@ BOOL RKObjectIsValueEqualToValue(id sourceValue, id destinationValue) {
 @synthesize nestedAttributeSubstitution = _nestedAttributeSubstitution;
 @synthesize validationError = _validationError;
 
++ (void)load{
+    
+    _numberFormatter = [[NSNumberFormatter alloc] init];
+    _numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+    
+}
+
 + (id)mappingOperationFromObject:(id)sourceObject toObject:(id)destinationObject withMapping:(RKObjectMappingDefinition *)objectMapping {
     // Check for availability of ManagedObjectMappingOperation. Better approach for handling?
     Class targetClass = NSClassFromString(@"RKManagedObjectMappingOperation");
@@ -121,12 +131,8 @@ BOOL RKObjectIsValueEqualToValue(id sourceValue, id destinationValue) {
 
     NSDate* date = nil;
 
-    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-    numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-
-    NSNumber *numeric = [numberFormatter numberFromString:string];
-
-    [numberFormatter release];
+    NSNumber *numeric = nil;
+    //NSNumber *numeric = [_numberFormatter numberFromString:string];
 
     if (numeric) {
         date = [NSDate dateWithTimeIntervalSince1970:[numeric doubleValue]];
