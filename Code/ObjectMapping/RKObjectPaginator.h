@@ -141,21 +141,6 @@ typedef void(^RKObjectPaginatorDidFailWithErrorBlock)(NSError *error, RKObjectLo
 @property (nonatomic, assign) NSUInteger perPage;
 
 /**
- A Boolean value indicating if the paginator has loaded a page of objects
-
- @returns YES when the paginator has loaded a page of objects
- */
-@property (nonatomic, readonly, getter = isLoaded) BOOL loaded;
-
-/**
- Returns the page number for the most recently loaded page of objects.
-
- @return The page number for the current page of objects.
- @exception NSInternalInconsistencyException Raised if isLoaded is NO.
- */
-@property (nonatomic, readonly) NSUInteger currentPage;
-
-/**
  Returns the number of pages in the total resource collection.
 
  @return A count of the number of pages in the resource collection.
@@ -170,6 +155,15 @@ typedef void(^RKObjectPaginatorDidFailWithErrorBlock)(NSError *error, RKObjectLo
  @exception NSInternalInconsistencyException Raised if hasObjectCount is NO.
  */
 @property (nonatomic, readonly) NSUInteger objectCount;
+
+
+- (BOOL)hasLoadedPage:(NSUInteger)page;
+
+
+- (NSUInteger)numberOfPagesLoaded;
+
+- (RKObjectLoader*)loaderForPage:(NSUInteger)page;
+
 
 /**
  Returns a Boolean value indicating if the total number of pages in the collection
@@ -187,35 +181,15 @@ typedef void(^RKObjectPaginatorDidFailWithErrorBlock)(NSError *error, RKObjectLo
  */
 - (BOOL)hasObjectCount;
 
-/**
- Returns a Boolean value indicating if there is a next page in the collection.
 
- @return YES if there is a next page, otherwise NO.
- @exception NSInternalInconsistencyException Raised if isLoaded or hasPageCount is NO.
- */
-- (BOOL)hasNextPage;
 
-/**
- Returns a Boolean value indicating if there is a previous page in the collection.
+- (BOOL)hasPage:(NSUInteger)page;
 
- @return YES if there is a previous page, otherwise NO.
- @exception NSInternalInconsistencyException Raised if isLoaded is NO.
- */
-- (BOOL)hasPreviousPage;
 
 /** @name Paginator Actions */
 
-/**
- Loads the next page of data by incrementing the current page, constructing an object
- loader to fetch the data, and object mapping the results.
- */
-- (void)loadNextPage;
 
-/**
- Loads the previous page of data by decrementing the current page, constructing an object
- loader to fetch the data, and object mapping the results.
- */
-- (void)loadPreviousPage;
+- (void)loadAllPages;
 
 /**
  Loads a specific page of data by mutating the current page, constructing an object
@@ -224,6 +198,10 @@ typedef void(^RKObjectPaginatorDidFailWithErrorBlock)(NSError *error, RKObjectLo
  @param pageNumber The page of objects to load from the remote backend
  */
 - (void)loadPage:(NSUInteger)pageNumber;
+
+
+- (void)cancel;
+
 
 @end
 
